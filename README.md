@@ -48,17 +48,20 @@ By pairing real-time sensing with inline neuromorphic processing, this system ac
 
 The ecosystem is organized into a modular development framework:
 
-```text
 gravitywell-quantum-controller-3t/
 ├── .github/workflows/      <- Automated cloud compilation & regression testing
-├── docs/                   <- USPTO provisional specs, API guides, & financial valuation
-├── firmware/               <- Predictive trajectory engines & memory-mapped C drivers
-├── rtl/                    <- Synthesizable Verilog modules for chip logic & multi-tile bridges
+├── docs/                   <- Whitepaper, Pitch Deck, & FPGA Synthesis Guide
+├── firmware/
+│   ├── aethel_gravity_well_controller.py
+│   ├── aethel_hardware_driver.c
+│   ├── aethel_trajectory_generator.py
+│   ├── aethel_3t_toroidal_engine.py      <- UPDATED: Integrated 3T coordinate core
+│   └── aethel_advanced_mesh_hil.py       <- NEW: Tessellated multi-torus & HIL engine
+├── rtl/                    <- Synthesizable Verilog modules & hardware constraints (.xdc)
 ├── tests/                  <- Boundary condition unit tests and error saturation checks
 ├── ui/                     <- Interactive terminal-based Poincaré tracking dashboard
-├── main.py                 <- Master system coordinator and live hardware emulator
+├── main.py                 <- Master system coordinator and live 3T hardware emulator
 └── setup.py                <- Python package distribution manifest
-```
 
 ---
 
