@@ -1,7 +1,7 @@
-# Gravitywell-quantum-controller
+# Gravitywell-quantum-controller-3t
 Synthesizable Verilog RTL and Python co-design stack for real-time, non-Euclidean optical potential well stabilization and fault-tolerant adiabatic qubit braiding.
 
-# gravitywell-quantum-controller
+# gravitywell-quantum-controller-3t
 
 The `gravitywell-quantum-controller` is a production-grade, hardware-software co-design architecture built to bridge solid-state neuromorphic computing with open-space quantum optomechanics. 
 
@@ -13,7 +13,7 @@ By unifying a classical memristive crossbar substrate, an integrated avalanche p
 # Gravitywell-Quantum-Controller
 ### A 3-Tier Hardware-Software Co-Design Platform for Non-Euclidean Optomechanical Control
 
-[![Aethel Core Validation Framework](https://github.com/mrlindzer3/Gravitywell-quantum-controller/actions/workflows/ci_verification.yml/badge.迎え.svg)](https://github.com/mrlindzer3/Gravitywell-quantum-controller-3t/actions)
+[![Aethel Core Validation Framework](https://github.com/mrlindzer3/Gravitywell-quantum-controller-3t/actions/workflows/ci_verification.yml/badge.迎え.svg)](https://github.com/mrlindzer3/Gravitywell-quantum-controller-3t/actions)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE.md)
 
 ---
