@@ -57,3 +57,44 @@ class ToroidalTopographyEngine:
         net_tension_y = tension_n - tension_s
         
         return net_tension_x, net_tension_y
+
+import numpy as np
+
+class AethelTernaryTensegrityTopographyEngine:
+    def __init__(self, num_nodes=1024):
+        self.num_nodes = num_nodes
+        
+        # 1. TERNARY: States mapped to -1 (Repulsion), 0 (Neutral), +1 (Attraction)
+        self.ternary_state_register = np.zeros(num_nodes, dtype=int)
+        
+        # 2. TENSEGRITY: Virtual spring-tension network configuration matrix
+        self.tension_network_matrix = np.eye(num_nodes) * 1.0
+        
+        # 3. TOPOGRAPHY: Elevation mapping profile matrix (Z-axis light metrics)
+        self.topographic_relief_map = np.zeros((32, 32))
+
+    def evaluate_ternary_logic(self, raw_input_currents):
+        """Processes sensor data into clean -1, 0, or +1 states."""
+        # Express logic thresholds cleanly using Ternary parameters
+        self.ternary_state_register = np.where(raw_input_currents > 1.5, 1, 
+                                      np.where(raw_input_currents < -1.5, -1, 0))
+        return self.ternary_state_register
+
+    def calculate_tensegrity_balance(self, applied_force_vector):
+        """Balances localized node adjustments across the continuous tension framework."""
+        # Distribute kinetic stress evenly across the continuous network
+        balanced_tension_response = np.dot(self.tension_network_matrix, applied_force_vector)
+        return balanced_tension_response
+
+    def deform_topographic_landscape(self, target_x, target_y, well_depth):
+        """Alters the physical topography of the optical landscape."""
+        # Convert raw coordinate tracks into a 2D topographic grid elevation layer
+        grid_x = int(clip((target_x + 1) * 15.5, 0, 31))
+        grid_y = int(clip((target_y + 1) * 15.5, 0, 31))
+        
+        # Carve a physical valley (potential minimum) into the topography map
+        self.topographic_relief_map[grid_x, grid_y] = -well_depth
+
+def clip(val, low, high):
+    return max(low, min(val, high))
+
