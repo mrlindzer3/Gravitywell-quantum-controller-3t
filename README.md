@@ -3,7 +3,7 @@ Synthesizable Verilog RTL and Python co-design stack for real-time, non-Euclidea
 3T stands for Ternary, Tensegrity, Torography.
 # gravitywell-quantum-controller-3t
 
-The `gravitywell-quantum-controller` is a production-grade, hardware-software co-design architecture built to bridge solid-state neuromorphic computing with open-space quantum optomechanics. 
+The `gravitywell-quantum-controller-3t` is a production-grade, hardware-software co-design architecture built to bridge solid-state neuromorphic computing with open-space quantum optomechanics. 
 
 By unifying a classical memristive crossbar substrate, an integrated avalanche photodiode (APD) sensing layer, and a high-gradient Micro-LED film,controller handles sub-microsecond physical stabilization of levitated dielectric nanoparticles for fault-tolerant topological quantum state manipulation.
 
@@ -20,7 +20,7 @@ By unifying a classical memristive crossbar substrate, an integrated avalanche p
 
 ## ── OVERVIEW ──
 
-The **`gravitywell-quantum-controller`** is a vertically integrated, high-speed optoelectronic control platform engineered to solve the core bottleneck of modern experimental physics: **maintaining the spatial and phase stability of fragile, isolated particle arrays under dynamic environmental stress.**
+The **`gravitywell-quantum-controller-3t`** is a vertically integrated, high-speed optoelectronic control platform engineered to solve the core bottleneck of modern experimental physics: **maintaining the spatial and phase stability of fragile, isolated particle arrays under dynamic environmental stress.**
 
 By pairing real-time sensing with inline neuromorphic processing, this system actively warps potential fields across physical interactive surfaces to suppress decoherence and particle drift without mechanical latency.
 
@@ -49,7 +49,7 @@ By pairing real-time sensing with inline neuromorphic processing, this system ac
 The ecosystem is organized into a modular development framework:
 
 ```text
-gravitywell-quantum-controller/
+gravitywell-quantum-controller-3t/
 ├── .github/workflows/      <- Automated cloud compilation & regression testing
 ├── docs/                   <- USPTO provisional specs, API guides, & financial valuation
 ├── firmware/               <- Predictive trajectory engines & memory-mapped C drivers
