@@ -1,6 +1,6 @@
 # Gravitywell-quantum-controller-3t
 Synthesizable Verilog RTL and Python co-design stack for real-time, non-Euclidean optical potential well stabilization and fault-tolerant adiabatic qubit braiding.
-
+3T stands for Ternary, Tensegrity, Torography.
 # gravitywell-quantum-controller-3t
 
 The `gravitywell-quantum-controller` is a production-grade, hardware-software co-design architecture built to bridge solid-state neuromorphic computing with open-space quantum optomechanics. 
