@@ -1,26 +1,26 @@
-# Gravitywell-quantum-controller-3t
+# Gravitywell-quantum-controller
 Synthesizable Verilog RTL and Python co-design stack for real-time, non-Euclidean optical potential well stabilization and fault-tolerant adiabatic qubit braiding.
 
-# gravitywell-quantum-controller-3t
+# gravitywell-quantum-controller
 
-The `gravitywell-quantum-controller-3t` is a production-grade, hardware-software co-design architecture built to bridge solid-state neuromorphic computing with open-space quantum optomechanics. 
+The `gravitywell-quantum-controller` is a production-grade, hardware-software co-design architecture built to bridge solid-state neuromorphic computing with open-space quantum optomechanics. 
 
-By unifying a classical memristive crossbar substrate, an integrated avalanche photodiode (APD) sensing layer, and a high-gradient Micro-LED film, this 3-Tier (3T) controller handles sub-microsecond physical stabilization of levitated dielectric nanoparticles for fault-tolerant topological quantum state manipulation.
+By unifying a classical memristive crossbar substrate, an integrated avalanche photodiode (APD) sensing layer, and a high-gradient Micro-LED film,controller handles sub-microsecond physical stabilization of levitated dielectric nanoparticles for fault-tolerant topological quantum state manipulation.
 
-### 🌌 Core Mechanism: The 3T Architecture
+### 🌌 Core Mechanism: The Architecture
 * **Tier 1: Neuromorphic In-Memory Acceleration:** Leverages passive physical dissipation across a memristor crossbar array to execute instantaneous vector-matrix error calculations using Ohm's Law.
 
-# Gravitywell-Quantum-Controller-3t
+# Gravitywell-Quantum-Controller
 ### A 3-Tier Hardware-Software Co-Design Platform for Non-Euclidean Optomechanical Control
 
-[![Aethel Core Validation Framework](https://github.com/mrlindzer3/Gravitywell-quantum-controller-3t/actions/workflows/ci_verification.yml/badge.迎え.svg)](https://github.com/mrlindzer3/Gravitywell-quantum-controller-3t/actions)
+[![Aethel Core Validation Framework](https://github.com/mrlindzer3/Gravitywell-quantum-controller/actions/workflows/ci_verification.yml/badge.迎え.svg)](https://github.com/mrlindzer3/Gravitywell-quantum-controller-3t/actions)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE.md)
 
 ---
 
 ## ── OVERVIEW ──
 
-The **`gravitywell-quantum-controller-3t`** is a vertically integrated, high-speed optoelectronic control platform engineered to solve the core bottleneck of modern experimental physics: **maintaining the spatial and phase stability of fragile, isolated particle arrays under dynamic environmental stress.**
+The **`gravitywell-quantum-controller`** is a vertically integrated, high-speed optoelectronic control platform engineered to solve the core bottleneck of modern experimental physics: **maintaining the spatial and phase stability of fragile, isolated particle arrays under dynamic environmental stress.**
 
 By pairing real-time sensing with inline neuromorphic processing, this system actively warps potential fields across physical interactive surfaces to suppress decoherence and particle drift without mechanical latency.
 
@@ -49,7 +49,7 @@ By pairing real-time sensing with inline neuromorphic processing, this system ac
 The ecosystem is organized into a modular development framework:
 
 ```text
-gravitywell-quantum-controller-3t/
+gravitywell-quantum-controller/
 ├── .github/workflows/      <- Automated cloud compilation & regression testing
 ├── docs/                   <- USPTO provisional specs, API guides, & financial valuation
 ├── firmware/               <- Predictive trajectory engines & memory-mapped C drivers
