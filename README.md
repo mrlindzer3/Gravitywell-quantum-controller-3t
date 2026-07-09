@@ -1,4 +1,4 @@
-# Gravitywell-quantum-controller-3t
+8⁸# Gravitywell-quantum-controller-3t
 Synthesizable Verilog RTL and Python co-design stack for real-time, non-Euclidean optical potential well stabilization and fault-tolerant adiabatic qubit braiding.
 3T stands for Ternary, Tensegrity, Torography.
 # gravitywell-quantum-controller-3t
@@ -105,4 +105,45 @@ python main.py
 ### 🛠️ Enabled Functionality
 Instead of relying on volatile software-level interrupt loops, this controller hardwires the physics of quantum control directly into fixed-point silicon registers. It automatically tracks particle micro-jitter, applies hyperbolic scaling multipliers, and modulates potential well coordinates in a single clock cycle. This enables **adiabatic qubit braiding**—physically weaving quantum particles along non-intersecting topological trajectories to execute non-Abelian quantum logic gates completely shielded from localized environmental noise.
 
+---
+
+## ── THE 3T MATHEMATICAL FRAMEWORK ──
+
+The system architecture rejects standard planar binary tracking paradigms, executing all field modulation calculations across a **Ternary, Tensegrity, Toroidal Topography (3T)** control lattice:
+
+### 1. Ternary Logic State Space
+The core register pipelines operate via discrete balanced ternary logic primitives:
+* **`+1` (Attraction):** Dynamically shapes a localized potential energy minimum.
+* **` 0` (Neutral Inertia):** Disengages active voltage drive, allowing natural inertial drift.
+* **`-1` (Repulsion):** Deploys a high-intensity localized potential maximum boundary.
+
+### 2. Tensegrity Tension Networks
+Instead of modulating spatial optical nodes in structural isolation, the framework models the entire emitter surface as a virtual continuous tensegrity network. Every node is structurally cross-linked by mathematical vector cables. Localized load adjustments dynamically redistribute geometric stress fields across adjacent matrix elements to prevent power spikes and maintain physical equilibrium.
+
+### 3. Toroidal Topography
+The arena maps the tracking surface directly onto a continuous, non-Euclidean **Torus** geometry ($\theta, \phi$) rather than a flat 2D coordinate system. 
+
+```
+             .-------.
+          .-'         '-.
+        .'               '.
+       /                   \
+      |   .-----------.     |
+      |  /             \    |
+      | |               |   |   Boundary-Free Wrapping:
+      |  \             /    |   (x, y) % 1.0 Topology
+       \   '-----------'   /
+        '.               .'
+          '-.         .-'
+             '-------'
+```
+
+By applying periodic boundary conditions via modulo arithmetic, particles can travel indefinitely along continuous orbital pathways. When a particle or field distortion exits the right boundary, it seamlessly emerges on the left boundary; exiting the top boundary routes it instantly to the bottom, eliminating mathematical edge-discontinuities.
+
+---
+
+## ── CORE MODULES ADDENDUM ──
+
+* **`firmware/aethel_3t_toroidal_engine.py`:** Evaluates real-time APD sensor inputs into balanced ternary states, transforms coordinates into toroidal spaces, and calculates continuous neighbor-node tensegrity vectors.
+```
 
