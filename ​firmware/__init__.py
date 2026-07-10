@@ -51,6 +51,7 @@ from hardware.aethel_photonic_controller.py import AethelPhotonicController
 from hardware.aethel_plasmonic_controller import AethelPlasmonicController
 from hardware.aethel_edge_controller import AethelEdgeController
 from hardware.aethel_cluster_fabric import AethelClusterFabric
+from hardware.aethel_optomechanics_controller import AethelOptomechanicsController
 
 
 # Enforce clean numerical array handling dependencies across the stack
