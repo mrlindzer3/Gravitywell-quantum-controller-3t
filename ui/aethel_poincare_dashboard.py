@@ -1,65 +1,92 @@
+# ──────────────────────────────────────────────────────────────────────────
+# FILE: ui/aethel_poincare_dashboard.py
+# ROLE: Real-Time Multi-Panel Volumetric ASCII Matrix Interface
+# ENGINEER: Ryan Taylor Lindsey
+# ──────────────────────────────────────────────────────────────────────────
+
 import os
 import numpy as np
+from typing import Tuple, Dict, Any
 
 class AethelPoincareDashboard:
-    def __init__(self, grid_size=16):
+    def __init__(self, grid_size: int = 16):
+        """
+        Initializes an enterprise-grade terminal-based visualization cockpit
+        to monitor hardware metrics, recycling loops, and braid trajectories.
+        """
         self.grid_size = grid_size
-        # ASCII density scale to represent different field potentials
-        self.ascii_chars = [" ", ".", "-", "=", "+", "*", "#", "%", "@"]
-
-    def _value_to_ascii(self, val, max_val=1.0):
-        """Maps a floating-point potential value to an ASCII character density."""
-        normalized = max(0, min(len(self.ascii_chars) - 1, 
-                     int((val / (max_val + 1e-6)) * (len(self.ascii_chars) - 1))))
-        return self.ascii_chars[normalized]
+        self.terminal_width = 90
 
     def clear_terminal(self):
-        """Clears the terminal screen dynamically for real-time frame animation."""
+        """Forces a clean console refresh frame-by-frame."""
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    def render_field_slices(self, step, pos, velocities, potential_map, anomaly_flag):
+    def _generate_ascii_slice(self, potential_map: np.ndarray, current_z: float) -> list:
+        """Renders a 2D cross-section spatial slice of the 3-Torus manifold."""
+        z_idx = int((current_z * self.grid_size) % self.grid_size)
+        slice_data = potential_map[:, :, z_idx]
+        
+        # ASCII density gradients to map field intensity visually
+        chars = [" ", ".", "-", "=", "+", "*", "#", "%", "@"]
+        max_val = np.max(np.abs(slice_data)) if np.max(np.abs(slice_data)) > 0 else 1.0
+        
+        lines = []
+        for r in range(self.grid_size):
+            row_str = ""
+            for c in range(self.grid_size):
+                val = abs(slice_data[r, c])
+                char_idx = min(int((val / max_val) * (len(chars) - 1)), len(chars) - 1)
+                row_str += chars[char_idx] + " "
+            lines.append(row_str)
+        return lines
+
+    def render_field_slices(self, step: int, pos: Tuple[float, float, float], 
+                             velocities: Tuple[float, float, float], potential_map: np.ndarray, 
+                             anomaly_flag: bool, recycling_metrics: Dict[str, float],
+                             cluster_status: Dict[str, Any], compiler_braid_id: str = "TENSOR_0"):
         """
-        Renders a side-by-side 2D cross-sectional matrix slice layout of the 
-        active 3D Three-Torus field potential configuration.
+        Draws the synchronized multi-panel dashboard directly to stdout.
         """
         self.clear_terminal()
         px, py, pz = pos
         vx, vy, vz = velocities
         
-        # Calculate current lattice index of the tracked particle
-        idx_x = int((px % 1.0) * (self.grid_size - 1))
-        idx_y = int((py % 1.0) * (self.grid_size - 1))
-        idx_z = int((pz % 1.0) * (self.grid_size - 1))
-
-        print("=" * 78)
-        print(f" AETHEL CORE 3T MONITOR // STEP {step:03d} // SYSTEM STATE TENSOR DASHBOARD")
-        print("=" * 78)
-        print(f" POSITION:   X: {px:.4f}  | Y: {py:.4f}  | Z: {pz:.4f}  (Grid Map: [{idx_x},{idx_y},{idx_z}])")
-        print(f" VELOCITIES: Vx:{vx:+.4f} | Vy:{vy:+.4f} | Vz:{vz:+.4f}")
+        # 1. Generate the spatial manifold ASCII projection slice
+        ascii_lines = self._generate_ascii_slice(potential_map, pz)
         
-        status_string = "⚠️  [ANOMALY TRIGGERED]" if anomaly_flag else "✅ [LOGIC SECURE]"
-        print(f" PARADIGM GÖDEL STATE: {status_string}")
-        print("-" * 78)
+        # Header block banner
+        print("═" * self.terminal_width)
+        print(f" AETHEL CORE CORE SYSTEM INTERFACE v3.1.0 // FRAME RUNTIME STEP: {step:03d}")
+        print("═" * self.terminal_width)
         
-        # Render the XY Slice (at the particle's current Z index) and XZ Slice side-by-side
-        print("     [XY CROSS-SECTION SLICE]             [XZ CROSS-SECTION SLICE]")
-        print("    " + " ".join([str(i%10) for i in range(self.grid_size)]) + "        " + " ".join([str(i%10) for i in range(self.grid_size)]))
+        # 2. Render Left Panel (Spatial Geometry) side-by-side with Right Panel (Hardware Diagnostics)
+        print(f" [3-TORUS SPATIAL REFRACTION SLICE (Z-INDEX: {int((pz*self.grid_size)%self.grid_size):02d})] │ [SUBSTRATE OPERATING METRICS]")
         
-        for y in range(self.grid_size):
-            xy_line = ""
-            xz_line = ""
-            for x in range(self.grid_size):
-                # XY slice calculation
-                val_xy = abs(potential_map[x, y, idx_z])
-                char_xy = "O" if (x == idx_x and y == idx_y) else self._value_to_ascii(val_xy)
-                xy_line += char_xy + " "
-                
-                # XZ slice calculation (using current Y index)
-                val_xz = abs(potential_map[x, idx_y, y])
-                char_xz = "O" if (x == idx_x and y == idx_z) else self._value_to_ascii(val_xz)
-                xz_line += char_xz + " "
-                
-            print(f"{y:02d}  {xy_line}    {y:02d}  {xz_line}")
+        right_panel_metrics = [
+            f"• Core Spatial Position  : ({px:.3f}, {py:.3f}, {pz:.3f})",
+            f"• Tensored Velocity Bias : ({vx:.3f}, {vy:.3f}, {vz:.3f})",
+            f"• Active Compiler Braid  : {compiler_braid_id}",
+            f"• Gödel Hardware Guard   : {'⚠️ ANOMALY INTERCEPT' if anomaly_flag else '✅ LOGIC SECURE'}",
+            "─" * 43,
+            f" [5-POINT THERMODYNAMIC RECYCLING HARVEST] ",
+            f"• Phonon Lattice Intercept: {recycling_metrics.get('Phonon_Recovered_nJ', 0.0):.3f} nJ",
+            f"• Photonic & Back-EMF     : {recycling_metrics.get('Photonic_Recovered_nJ', 0.0):.3f} nJ",
+            f"• Seebeck Cross-Layer Grad: {recycling_metrics.get('Seebeck_Recovered_nJ', 0.0):.3f} nJ",
+            f"• Kinetic Drag Recovery   : {recycling_metrics.get('Kinetic_Recovered_nJ', 0.0):.3f} nJ",
+            f"• Cumulative Energy Saved : {recycling_metrics.get('Total_Reclaimed_Energy_nJ', 0.0):.3f} nJ",
+            "─" * 43,
+            f" [SUPER-TORUS CLUSTER SCALABILITY HEALTH] ",
+            f"• Active Array Clustering: {cluster_status.get('Total_Active_Chips', 1)} Physical Node Die(s)",
+            f"• Total Grid Intersects  : {cluster_status.get('Total_Cluster_Grid_Points', 4096)} Nodes",
+            f"• Inter-Chip Data Lanes  : {cluster_status.get('Inter_Chip_Interconnect_Lanes', 0)} Optical Channels"
+        ]
+        
+        # Merge columns line-by-line for stable terminal layout formatting
+        for i in range(self.grid_size):
+            left_side = ascii_lines[i] if i < len(ascii_lines) else " " * (self.grid_size * 2)
+            right_side = right_panel_metrics[i] if i < len(right_panel_metrics) else ""
+            print(f"   {left_side} │ {right_side}")
             
-        print("=" * 78)
-        print(" Legend: 'O' = Tracked Qubit Particle Boundary | Density Scale: [ .-=+*#%@ ]")
+        print("═" * self.terminal_width)
+        print(" SYSTEM COMMAND CONSOLE KEY: [Ctrl+C] to Halt Emulation Track Pipeline")
+        print("═" * self.terminal_width)
