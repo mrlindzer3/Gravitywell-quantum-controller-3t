@@ -37,6 +37,7 @@ from .aethel_manifold_controller import AethelManifoldController
 from .aethel_boundary_controller import AethelBoundaryController
 from .aethel_alignment_controller import AethelAlignmentController
 from .aethel_synaptic_controller import AethelSynapticController
+from .aethel_routing_controller import AethelRoutingController
 
 
 # Enforce clean numerical array handling dependencies across the stack
