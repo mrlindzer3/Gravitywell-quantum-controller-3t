@@ -79,3 +79,34 @@ class AethelThermodynamicRecycler:
             "Photonic_Recovered_nJ": self.accumulated_photonic_joules,
             "Total_Reclaimed_Energy_nJ": self.total_energy_recovered
         }
+    def process_seebeck_thermal_gradient(self, tier1_temp: float, tier3_temp: float) -> float:
+        """
+        [Recycler 4: Seebeck Thermoelectric Generation]
+        Calculates energy reclaimed by the micro-scale thermoelectric layers 
+        interspersed between the active memristor core and the GaN LED cap.
+        """
+        # Seebeck Coefficient for Bismuth Telluride (~200 uV/K)
+        seebeck_coefficient = 200e-6 
+        delta_t = np.abs(tier3_temp - tier1_temp)
+        
+        # Power generated is proportional to the square of the temperature delta
+        recovered_volts = seebeck_coefficient * delta_t
+        recovered_power_nj = (recovered_volts ** 2) * self.max_recycling_efficiency * 1e9
+        
+        self.total_energy_recovered += recovered_power_nj
+        return recovered_power_nj
+
+    def process_kinetic_drag_recovery(self, particle_velocity_vector: Tuple[float, float, float], deceleration_factor: float) -> float:
+        """
+        [Recycler 5: Kinetic Qubit Drag Recovery]
+        Regenerative trapping loop that reclaims kinetic momentum from 
+        decelerating optomechanical particles inside the 3-Torus matrix.
+        """
+        vx, vy, vz = particle_velocity_vector
+        kinetic_energy = 0.5 * (vx**2 + vy**2 + vz**2) # E_k = 0.5 * m * v^2
+        
+        # Reclaim a fraction of kinetic energy during hard stabilization phases
+        recovered_kinetic_nj = kinetic_energy * deceleration_factor * self.max_recycling_efficiency
+        
+        self.total_energy_recovered += recovered_kinetic_nj
+        return recovered_kinetic_nj
