@@ -52,6 +52,7 @@ from hardware.aethel_plasmonic_controller import AethelPlasmonicController
 from hardware.aethel_edge_controller import AethelEdgeController
 from hardware.aethel_cluster_fabric import AethelClusterFabric
 from hardware.aethel_optomechanics_controller import AethelOptomechanicsController
+from hardware.aethel_quantum_shuttler import AethelQuantumShuttler
 
 
 # Enforce clean numerical array handling dependencies across the stack
