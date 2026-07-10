@@ -48,6 +48,7 @@ from .aethel_functor_compiler import AethelFunctorCompiler
 from hardware.aethel_layout_verifier import AethelLayoutVerifier
 from hardware.aethel_mask_optimizer import AethelMaskOptimizer
 from hardware.aethel_photonic_controller.py import AethelPhotonicController
+from hardware.aethel_plasmonic_controller import AethelPlasmonicController
 
 
 # Enforce clean numerical array handling dependencies across the stack
