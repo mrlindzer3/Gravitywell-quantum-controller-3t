@@ -1,4 +1,4 @@
-# ──────────────────────────────────────────────────────────────────────────
+ ──────────────────────────────────────────────────────────────────────────
 # FILE: firmware/__init__.py
 # SYSTEM: Solid-State Neuromorphic Quantum Optomechanics Substrate Core
 # SPECIFICATION: System Package Initialization, Type Registry & Validation Layer
@@ -159,6 +159,10 @@ if not _integrity_passed:
     # can run static code analysis sweeps without breaking live builds.
 else:
     logger.info(f"System Paradigms Active: Mapped on {_registry.system_configuration['Manifold_Geometry']}")
-# ──────────────────────────────────────────────────────────────────────────
-# END OF INITIALIZATION LAYER (Approx. 150-200 lines production density footprint)
-# ──────────────────────────────────────────────────────────────────────────
+#
+# Append these tracking modules if they aren't already explicitly imported
+from .aethel_hardware_driver import AethelHardwareDriver
+from .aethel_topography_firmware import AethelTopographyFirmware
+from .aethel_thermodynamic_recycler import AethelThermodynamicRecycler
+ ──────────────────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────
