@@ -24,7 +24,13 @@ from typing import Tuple, Dict, Any, Union
 from .aethel_3d_torus_engine import Aethel3DTorusEngine
 from .aethel_trajectory_generator import AethelTrajectoryGenerator
 from .aethel_gravity_well_controller import AethelGravityWellController
-from .aethel_hardware_driver import AethelHardwareDriver  # Add this line
+from .aethel_hardware_driver import AethelHardwareDriver  # Add this linefrom .aethel_3d_torus_engine import Aethel3DTorusEngine
+from .aethel_trajectory_generator import AethelTrajectoryGenerator
+from .aethel_gravity_well_controller import AethelGravityWellController
+from .aethel_hardware_driver import AethelHardwareDriver
+from .aethel_topography_firmware import AethelTopographyFirmware
+from .aethel_thermodynamic_recycler import AethelThermodynamicRecycler  # Add this line
+
 
 # Enforce clean numerical array handling dependencies across the stack
 try:
