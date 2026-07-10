@@ -35,6 +35,7 @@ from hardware.aethel_diagnostics_logger import AethelDiagnosticsLogger
 from .aethel_predictive_controller import AethelPredictiveController
 from .aethel_manifold_controller import AethelManifoldController
 from .aethel_boundary_controller import AethelBoundaryController
+from .aethel_alignment_controller import AethelAlignmentController
 
 
 # Enforce clean numerical array handling dependencies across the stack
