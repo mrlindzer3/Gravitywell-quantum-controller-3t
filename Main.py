@@ -10,7 +10,38 @@ def run_system_emulation_loop():
     engine = Aethel3DTorusEngine(grid_size=GRID_RESOLUTION)
     trajectory_calc = AethelTrajectoryGenerator(step_size=0.05)
     dashboard = AethelPoincareDashboard(grid_size=GRID_RESOLUTION)
-    
+    # Insert or update these definitions inside the run_system_emulation_loop() function in main.py
+from firmware import AethelThermodynamicRecycler, AethelClusterMonitor, AethelGraphCompiler
+
+# 1. Initialize our newly implemented hardware subsystems before the main loop starts
+recycler = AethelThermodynamicRecycler(resolution=16)
+cluster = AethelClusterMonitor(cluster_shape=(2, 2, 2), grid_resolution=16) # 8 chip array block
+compiler = AethelGraphCompiler(grid_resolution=16)
+
+# 2. Inside the 'for step in range(1, simulated_frames + 1):' loop, feed metrics into dashboard:
+# Mock hardware telemetry states for physical emulation tracking
+mock_strain = np.random.uniform(-0.5, 0.5, (16, 16))
+mock_led_volts = np.ones((16, 16)) * 2.5
+mock_apd_photons = np.random.uniform(0, 10, (16, 16))
+
+# Execute the 5-point harvesting sweeps
+recycler.process_phonon_lattice_intercept(mock_strain)
+recycler.process_photonic_back_emf(mock_led_volts, mock_apd_photons)
+recycler.process_seebeck_thermal_gradient(tier1_temp=310.15, tier3_temp=345.15)
+recycler.process_kinetic_drag_recovery(particle_velocity_vector=(vx, vy, vz), deceleration_factor=0.35)
+
+# Build the final render step call
+dashboard.render_field_slices(
+    step=step,
+    pos=current_position,
+    velocities=(vx, vy, vz),
+    potential_map=engine.topographic_volume_map,
+    anomaly_flag=anomaly_detected,
+    recycling_metrics=recycler.metrics,
+    cluster_status=cluster.calculate_super_torus_interconnects(),
+    compiler_braid_id="BRAID_CYC_0x4F"
+)
+
     # Starting parameters for the trapped qubit cluster boundary
     current_position = (0.5, 0.5, 0.5) 
     particle_mass = 1.0
