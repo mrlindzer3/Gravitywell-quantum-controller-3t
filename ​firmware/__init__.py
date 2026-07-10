@@ -41,6 +41,7 @@ from .aethel_routing_controller import AethelRoutingController
 from .aethel_clock_controller import AethelClockController
 from .aethel_failover_controller import AethelFailoverController
 from .aethel_state_controller import AethelStateController
+from .aethel_braid_optimizer import AethelBraidOptimizer
 
 
 # Enforce clean numerical array handling dependencies across the stack
