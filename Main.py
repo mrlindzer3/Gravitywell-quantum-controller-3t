@@ -1,81 +1,55 @@
-# Module: `main.py`
-### Master System Coordinator and 3T Multi-Torus HIL Emulator
-
-```python
 import time
 import numpy as np
-from ui.dashboard import GravityWellDashboard
-from firmware.aethel_gravity_well_controller import AethelHarmonicGravityWellController
-from firmware.trajectory_generator import BraidTrajectoryPlanner
-from firmware.aethel_3t_toroidal_engine import Aethel3TToroidalEngine
-from firmware.aethel_advanced_mesh_hil import AethelAdvancedMeshHILEngine
+from firmware.aethel_3d_torus_engine import Aethel3DTorusEngine
 
-def execute_complete_3t_loop(total_cycles=50):
-    print("[INIT] Initializing Vertically Integrated 3T Tech Stack...")
+def run_system_emulation_loop():
+    print("=" * 70)
+    print("INITIALIZING GRAVITYWELL 3T SUBSYSTEM AND CORE PARADIGM EXECUTOR")
+    print("=" * 70)
     
-# Inside the master loop in main.py:
-torus_engine_3d.process_3d_ternary_topography(target_x, target_y, target_z, raw_signal=live_apd_feedback[0])
-
-# Execute relaxation sweep to diffuse the potential fields across the 3D lattice
-torus_engine_3d.relax_3d_field_potentials(iterations=3, diffusion_factor=0.15)
-
-    # 1. Initialize core infrastructure layers
-    controller = AethelHarmonicGravityWellController(num_nodes=1024)
-    planner = BraidTrajectoryPlanner(radius_limit=0.95)
-    dashboard = GravityWellDashboard(grid_size=21)
+    engine = Aethel3DTorusEngine(grid_size=16)
+    simulated_steps = 10
+    pos_x, pos_y, pos_z = 0.5, 0.5, 0.5  
+    particle_mass = 1.0
     
-    # 2. Initialize the new advanced 3T geometric systems
-    torus_engine = Aethel3TToroidalEngine(grid_size=32)
-    advanced_mesh = AethelAdvancedMeshHILEngine(mesh_rows=2, mesh_cols=2, torus_grid_size=16)
+    print("\n[BOOT] 3T Tensor Substrate Active.")
+    print("[BOOT] Manifold space mapped to 3-Torus (S^1 x S^1 x S^1).")
+    print("[BOOT] Starting live hardware-in-the-loop emulation loop...\n")
     
-    print("[READY] Main control loop established. Executing hardware emulation.\n")
-    time.sleep(1.0)
-
-    for cycle in range(total_cycles):
-        t = cycle * 0.15
+    for step in range(1, simulated_steps + 1):
+        print(f"--- [EMULATION STEP {step}/{simulated_steps}] ---")
+        mock_apd_signal = 2.0 * np.sin(step * 0.5)
         
-        # --- LAYER 1: MATHEMATICAL TRAJECTORY GENERATION ---
-        # Generate our target coordinate path
-        target_x, target_y = planner.generate_braid_step(time_step=t, node_index=0, braid_type="lissajous")
+        engine.process_3d_ternary_topography(pos_x, pos_y, pos_z, raw_signal=mock_apd_signal)
+        engine.relax_3d_field_potentials(iterations=3, diffusion_factor=0.15)
         
-        # --- LAYER 2: SENSOR PROCESSING & TERNARY LOGIC ---
-        # Simulate physical sensor noise entering the Avalanche Photodiode (APD) matrix
-        rng = np.random.default_rng()
-        live_apd_feedback = rng.normal(0.0, 0.1, 1024)
+        lens_matrix = engine.compute_einstein_fresnel_lens(center_x=pos_x, center_y=pos_y, center_z=pos_z)
+        mean_phase_refraction = np.mean(lens_matrix)
         
-        # Pass coordinates to the Toroidal surface engine to determine Ternary states (-1, 0, +1)
-        # using our threshold rules
-        torus_engine.process_ternary_topography(target_x, target_y, raw_sensor_signal=live_apd_feedback[0])
+        v_x, v_y, v_z, anomaly_detected = engine.calculate_tensored_ramanujan_godel_lagrangian(
+            pos_x, pos_y, pos_z, particle_mass=particle_mass
+        )
         
-        # --- LAYER 3: HARDWARE-IN-THE-LOOP (HIL) FAULT INJECTION ---
-        # At cycle 20, simulate a physical hardware degradation event (e.g., laser/mirror fading)
-        if cycle == 20:
-            print("\n[HIL ALARM] Injecting simulated physical degradation event at Macro-Mesh coordinate (0,0)!")
-            advanced_mesh.inject_hardware_fault(row=0, col=0, local_x=8, local_y=8, degradation_factor=0.85)
-            time.sleep(1.0)
+        pos_x += v_x * 0.05
+        pos_y += v_y * 0.05
+        pos_z += v_z * 0.05
+        
+        print(f"  ▸ APD Feedback Signal : {mock_apd_signal:+.4f}")
+        print(f"  ▸ Mapped Coordinates   : X={pos_x:.4f}, Y={pos_y:.4f}, Z={pos_z:.4f} (Wrapped Torus)")
+        print(f"  ▸ Mean Phase Fresnel  : {mean_phase_refraction:.4f} rad")
+        print(f"  ▸ Resolved Velocities : Vx={v_x:+.4f}, Vy={v_y:+.4f}, Vz={v_z:+.4f}")
+        
+        if anomaly_detected:
+            print("  ⚠️  [GÖDEL LOGIC ALERT] Self-referential inversion loop blocked on local nodes!")
+        else:
+            print("    [LOGIC] System completeness verification: CLEAR.")
             
-        # --- LAYER 4: ADAPTIVE TENSEGRITY CORRECTION ---
-        # Calculate the tension response, passing the coordinates across the Multi-Torus grid
-        base_calculated_tension = 1.5
-        adapted_tension, system_status = advanced_mesh.calculate_adaptive_tension_field(target_x, target_y, base_calculated_tension)
-        
-        # --- LAYER 5: NEURAL CORE OVERRIDE & HARDWARE PROTECTION ---
-        # Run the neuromorphic predictive loop and enforce hardware-locked voltage caps (5.0V max)
-        controller.execute_neural_warp_predictive_loop(live_apd_feedback)
-        controller.update_well_states(live_apd_feedback)
-        
-        # --- LAYER 6: LIVE TELEMETRY RENDERING ---
-        dashboard.clear_screen()
-        dashboard.render_poincare_disk(target_x, target_y)
-        
-        # Append runtime metrics under the visual ASCII matrix
-        print(f"Cycle: {cycle:02d}/{total_cycles} | Global Vector Target: ({target_x:+.2f}, {target_y:+.2f})")
-        print(f"Hardware Logic Array Status: {system_status}")
-        print(f"Dynamic Tensegrity Tension Output: {adapted_tension:.3f} N")
-        print(f"Node 0 Driver Voltage Regulation: {controller.micro_led_intensity_register[0]:.2f}V / 5.00V")
-        
-        time.sleep(0.15)
+        print("-" * 50)
+        time.sleep(0.1)
+
+    print("\n" + "=" * 70)
+    print("EMULATION CYCLE COMPLETE: 3T OPERATIONAL FRAMEWORK IS SECURE")
+    print("=" * 70)
 
 if __name__ == "__main__":
-    execute_complete_3t_loop(total_cycles=40)
-```
+    run_system_emulation_loop()
