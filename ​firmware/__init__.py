@@ -96,6 +96,7 @@ __author__ = "Ryan Taylor Lindsey"
 # Configure package-level diagnostic log streams
 logging.basicConfig(level=logging.INFO, format="[AETHEL-FW-SYS] %(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("AethelFirmware")
+from hardware.aethel_softworks_vfs import AethelSoftworksVFS
 
 
 class FirmwarePackageRegistry:
