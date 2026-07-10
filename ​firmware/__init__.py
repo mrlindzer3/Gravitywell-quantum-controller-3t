@@ -64,6 +64,7 @@ from hardware.aethel_synthesis_engine import AethelSynthesisEngine
 from hardware.aethel_interaction_manager import AethelInteractionManager
 from hardware.aethel_boundary_matcher import AethelBoundaryMatcher
 from hardware.aethel_wavefront_controller import AethelWavefrontController
+from hardware.aethel_commercial_gateway import AethelCommercialGateway
 
 
 # Enforce clean numerical array handling dependencies across the stack
