@@ -44,6 +44,7 @@ from .aethel_state_controller import AethelStateController
 from .aethel_braid_optimizer import AethelBraidOptimizer
 from .aethel_metric_compiler import AethelMetricCompiler
 from .aethel_fusion_compiler import AethelFusionCompiler
+from .aethel_functor_compiler import AethelFunctorCompiler
 
 
 # Enforce clean numerical array handling dependencies across the stack
