@@ -4,12 +4,9 @@ class Aethel3DTorusEngine:
     def __init__(self, grid_size=16):
         self.grid_size = grid_size
         
-        # 1. 3D STATE REGISTERS
+        # 1. BASE VOLUMETRIC REGISTERS
         self.ternary_volume_register = np.zeros((grid_size, grid_size, grid_size), dtype=int)
         self.topographic_volume_map = np.zeros((grid_size, grid_size, grid_size))
-        
-        # 2. EINSTEIN-FRESNEL REFRACTION MATRIX
-        # Tracks phase distortion zones emanating from the center of the grid
         self.fresnel_phase_matrix = np.zeros((grid_size, grid_size, grid_size))
 
     def map_coordinates_to_3d_torus(self, x, y, z):
@@ -46,50 +43,60 @@ class Aethel3DTorusEngine:
             neighbor_average = (east + west + north + south + front + back) / 6.0
             self.topographic_volume_map = (1.0 - diffusion_factor) * self.topographic_volume_map + diffusion_factor * neighbor_average
 
-    def compute_einstein_fresnel_lens(self, center_x=0.5, center_y=0.5, center_z=0.5, wavelength=0.05):
+    def calculate_tensored_ramanujan_godel_lagrangian(self, pos_x, pos_y, pos_z, particle_mass=1.0):
         """
-        [THE EINSTEIN-FRESNEL ALGORITHM]
-        Calculates concentric phase refraction zones. Combines gravitational 
-        field warping (Einstein) with concentric phase ring zoning (Fresnel)
-        to calculate localized spatial focal points.
+        [THE TENSORED TRINITY CORE]
+        Constructs a rank-3 State Tensor T by taking the outer product of:
+          - Vector A: Euler-Lagrange spatial acceleration gradients
+          - Vector B: Ramanujan transcendental expansion coefficients
+          - Vector C: Gödel logic-weight constraints
+        Ensures multilinear coupling across all three theoretical domains.
         """
-        # Create relative spatial coordinate steps across the 3D grid dimensions
-        u = np.linspace(-0.5, 0.5, self.grid_size)
-        x_net, y_net, z_net = np.meshgrid(u, u, u, indexing='ij')
+        idx_x, idx_y, idx_z = self.map_coordinates_to_3d_torus(pos_x, pos_y, pos_z)
         
-        # Calculate true radial Euclidean distance from the lens focal center
-        r_squared = (x_net - (center_x - 0.5))**2 + (y_net - (center_y - 0.5))**2 + (z_net - (center_z - 0.5))**2
-        distance = np.sqrt(r_squared) + 1e-9 # Prevent divide-by-zero
+        # --- 1. VECTOR A: EULER-LAGRANGE ACCELERATION GRADIENTS ---
+        east_idx, west_idx  = (idx_x + 1) % self.grid_size, (idx_x - 1) % self.grid_size
+        north_idx, south_idx = (idx_y + 1) % self.grid_size, (idx_y - 1) % self.grid_size
+        front_idx, back_idx  = (idx_z + 1) % self.grid_size, (idx_z - 1) % self.grid_size
         
-        # 1. Einstein Gravitational Lensing effect (Refractive deflection scale)
-        # Deep potential wells dramatically twist local spatial grid pathways
-        gravitational_warp = np.abs(self.topographic_volume_map) * 2.0
+        v_e = self.topographic_volume_map[east_idx, idx_y, idx_z]
+        v_w = self.topographic_volume_map[west_idx, idx_y, idx_z]
+        v_n = self.topographic_volume_map[idx_x, north_idx, idx_z]
+        v_s = self.topographic_volume_map[idx_x, south_idx, idx_z]
+        v_f = self.topographic_volume_map[idx_x, idx_y, front_idx]
+        v_b = self.topographic_volume_map[idx_x, idx_y, back_idx]
         
-        # 2. Fresnel Zone phase calculation (Modulo wave cycles)
-        # Zones space into phase steps: 2*pi * (r^2 / wavelength) modified by the spatial warp
-        raw_phase = (2.0 * np.pi * (r_squared / wavelength)) * (1.0 + gravitational_warp)
-        
-        # Bound the phase between 0 and 2*pi to simulate physical refractive ring steps
-        self.fresnel_phase_matrix = raw_phase % (2.0 * np.pi)
-        
-        return self.fresnel_phase_matrix
+        accel_vector = np.array([
+            -((v_e - v_w) / 2.0) / particle_mass,
+            -((v_n - v_s) / 2.0) / particle_mass,
+            -((v_f - v_b) / 2.0) / particle_mass
+        ])
 
-    def calculate_3d_tensegrity(self, x, y, z):
-        """Calculates directional tension pulling on a 3D node from its neighbors."""
-        idx_x, idx_y, idx_z = self.map_coordinates_to_3d_torus(x, y, z)
+        # --- 2. VECTOR B: RAMANUJAN SERIES MATRIX CURVES ---
+        # Computes rapid modular series values for each spatial axis component
+        ram_x = (np.sqrt(8.0) / 9801.0) * (1103.0 + 42.0 * np.sin(pos_x * np.pi))
+        ram_y = (np.sqrt(8.0) / 9801.0) * (1103.0 + 42.0 * np.sin(pos_y * np.pi))
+        ram_z = (np.sqrt(8.0) / 9801.0) * (1103.0 + 42.0 * np.sin(pos_z * np.pi))
+        ramanujan_vector = np.array([ram_x, ram_y, ram_z])
+
+        # --- 3. VECTOR C: GÖDEL LOGICAL INDETERMINACY CONSTRAINTS ---
+        # Maps logic states to verification vectors to detect loop paradoxes
+        logic_state = float(self.ternary_volume_register[idx_x, idx_y, idx_z])
+        neighbor_state = float(self.ternary_volume_register[east_idx, idx_y, idx_z])
         
-        east_idx  = (idx_x + 1) % self.grid_size
-        west_idx  = (idx_x - 1) % self.grid_size
-        north_idx = (idx_y + 1) % self.grid_size
-        south_idx = (idx_y - 1) % self.grid_size
-        front_idx = (idx_z + 1) % self.grid_size
-        back_idx  = (idx_z - 1) % self.grid_size
-        
-        t_e = self.topographic_volume_map[east_idx, idx_y, idx_z]
-        t_w = self.topographic_volume_map[west_idx, idx_y, idx_z]
-        t_n = self.topographic_volume_map[idx_x, north_idx, idx_z]
-        t_s = self.topographic_volume_map[idx_x, south_idx, idx_z]
-        t_f = self.topographic_volume_map[idx_x, idx_y, front_idx]
-        t_b = self.topographic_volume_map[idx_x, idx_y, back_idx]
-        
-        return (t_e - t_w), (t_n - t_s), (t_f - t_b)
+        # If self-referential anomaly occurs, bias the third index of the constraint vector
+        godel_anomaly_weight = 1.0 if (logic_state != 0 and logic_state == -neighbor_state) else 0.0
+        godel_vector = np.array([1.0, logic_state, godel_anomaly_weight])
+
+        # --- 4. MULTILINEAR TENSOR PRODUCATION ---
+        # Construct the complete Rank-3 System State Tensor via consecutive outer products
+        # T_ijk = accel_i * ramanujan_j * godel_k
+        outer_ab = np.outer(accel_vector, ramanujan_vector)  # Rank-2 tensor matrix
+        system_state_tensor = np.multiply.outer(outer_ab, godel_vector) # Rank-3 tensor structure
+
+        # Contract the tensor down to extract physical tracking velocities adjusted by the logic layer
+        final_trajectories = np.tensordot(system_state_tensor, godel_vector, axes=([2], [0]))
+        resolved_velocities = np.diagonal(final_trajectories)
+
+        is_logical_anomaly = godel_anomaly_weight > 0.5
+        return resolved_velocities[0], resolved_velocities[1], resolved_velocities[2], is_logical_anomaly
