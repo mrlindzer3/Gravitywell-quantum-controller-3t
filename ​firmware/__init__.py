@@ -58,6 +58,7 @@ from hardware.aethel_quantum_telemetry import AethelQuantumTelemetry
 from hardware.aethel_cluster_mbqc import AethelClusterMBQC
 from hardware.aethel_qec_fabric import AethelQECFabric
 from hardware.aethel_automaton import AethelAutomaton
+from hardware.aethel_tensor_compiler import AethelTensorCompiler
 
 
 # Enforce clean numerical array handling dependencies across the stack
