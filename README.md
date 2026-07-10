@@ -119,6 +119,9 @@ gravitywell-quantum-controller-3t/
 ### Core Modules Addendum
 * **`firmware/aethel_3t_toroidal_engine.py`:** Evaluates real-time APD sensor inputs into balanced ternary states, transforms coordinates into toroidal spaces, and calculates continuous neighbor-node tensegrity vectors.
 
+* **`firmware/aethel_3d_torus_engine.py`:** Upgrades the spatial tracking engine to a 3-Torus ($T^3$) volumetric matrix, resolving ternary logic states and calculating differential tensegrity vectors across an enclosed 3D coordinate grid.
+
+
 ---
 
 ## ── COMPILATION & EMULATION ──
