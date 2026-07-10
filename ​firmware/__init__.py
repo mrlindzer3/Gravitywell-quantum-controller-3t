@@ -62,6 +62,7 @@ from hardware.aethel_tensor_compiler import AethelTensorCompiler
 from hardware.aethel_math_core import AethelMathCore
 from hardware.aethel_synthesis_engine import AethelSynthesisEngine
 from hardware.aethel_interaction_manager import AethelInteractionManager
+from hardware.aethel_boundary_matcher import AethelBoundaryMatcher
 
 
 # Enforce clean numerical array handling dependencies across the stack
