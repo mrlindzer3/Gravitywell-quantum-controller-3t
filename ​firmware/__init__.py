@@ -164,5 +164,6 @@ else:
 from .aethel_hardware_driver import AethelHardwareDriver
 from .aethel_topography_firmware import AethelTopographyFirmware
 from .aethel_thermodynamic_recycler import AethelThermodynamicRecycler
+from .aethel_cluster_monitor import AethelClusterMonitor
  ──────────────────────────────────────────────────────────────────────────
 ──────────────────────────────────────────────────────────
