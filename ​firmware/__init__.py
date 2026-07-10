@@ -182,6 +182,7 @@ def verify_firmware_stack_integrity(grid_resolution: int = 16) -> bool:
         
     logger.info("✅ All core firmware components verified. Environmental state secure.")
     return True
+from hardware.aethel_master_chaos_engine import AethelMasterChaosEngine
 
 # ── PACKAGE AUTO-EXECUTION ROUTINE ───────────────────────────────────────
 # Instantly check environment state upon framework deployment initialization
