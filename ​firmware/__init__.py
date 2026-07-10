@@ -30,6 +30,7 @@ from .aethel_gravity_well_controller import AethelGravityWellController
 from .aethel_hardware_driver import AethelHardwareDriver
 from .aethel_topography_firmware import AethelTopographyFirmware
 from .aethel_thermodynamic_recycler import AethelThermodynamicRecycler  # Add this line
+from .aethel_wavefront_calibrator import AethelWavefrontCalibrator
 
 
 # Enforce clean numerical array handling dependencies across the stack
