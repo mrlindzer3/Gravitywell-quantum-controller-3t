@@ -57,6 +57,7 @@ from hardware.aethel_quantum_gates import AethelQuantumGates
 from hardware.aethel_quantum_telemetry import AethelQuantumTelemetry
 from hardware.aethel_cluster_mbqc import AethelClusterMBQC
 from hardware.aethel_qec_fabric import AethelQECFabric
+from hardware.aethel_automaton import AethelAutomaton
 
 
 # Enforce clean numerical array handling dependencies across the stack
