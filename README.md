@@ -113,7 +113,10 @@ gravitywell-quantum-controller-3t/
 ├── tests/                  <- Boundary condition unit tests and error saturation checks
 ├── ui/                     <- Interactive terminal-based Poincaré tracking dashboard
 ├── main.py                 <- Master system coordinator and live 3T hardware emulator
-└── setup.py                <- Python package distribution manifest
+└── setup.py                <- Python package distribution manifest│   ├── aethel_3t_toroidal_engine.py      <- Integrated 2D coordinate core
+│   ├── aethel_3d_torus_engine.py         <- NEW: Volumetric 3-Torus tracking array
+│   └── aethel_advanced_mesh_hil.py       <- Tessellated multi-torus & HIL engine
+
 ```
 
 ### Core Modules Addendum
