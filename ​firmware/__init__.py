@@ -61,6 +61,7 @@ from hardware.aethel_automaton import AethelAutomaton
 from hardware.aethel_tensor_compiler import AethelTensorCompiler
 from hardware.aethel_math_core import AethelMathCore
 from hardware.aethel_synthesis_engine import AethelSynthesisEngine
+from hardware.aethel_interaction_manager import AethelInteractionManager
 
 
 # Enforce clean numerical array handling dependencies across the stack
