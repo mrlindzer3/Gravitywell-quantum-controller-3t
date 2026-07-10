@@ -13,6 +13,12 @@ from firmware.aethel_advanced_mesh_hil import AethelAdvancedMeshHILEngine
 def execute_complete_3t_loop(total_cycles=50):
     print("[INIT] Initializing Vertically Integrated 3T Tech Stack...")
     
+# Inside the master loop in main.py:
+torus_engine_3d.process_3d_ternary_topography(target_x, target_y, target_z, raw_signal=live_apd_feedback[0])
+
+# Execute relaxation sweep to diffuse the potential fields across the 3D lattice
+torus_engine_3d.relax_3d_field_potentials(iterations=3, diffusion_factor=0.15)
+
     # 1. Initialize core infrastructure layers
     controller = AethelHarmonicGravityWellController(num_nodes=1024)
     planner = BraidTrajectoryPlanner(radius_limit=0.95)
