@@ -1,143 +1,39 @@
-# -*- coding: utf-8 -*-
-"""
-AethelHarmonicGravityWellController (v1.0.0)
-Production-Grade Embedded Micro-Firmware Control Engine
-"""
-
 import numpy as np
 
-class AethelHarmonicGravityWellController:
-    def __init__(self, num_nodes=1024, arena_radius=1.0):
+class AethelGravityWellController:
+    def __init__(self, channels=16, max_voltage=3.3):
         """
-        Optimized Register-Transfer Level (RTL) Controller designed for execution
-        on the unified memristor-photodiode-LED substrate.
-        
-        This controller manages the optical intensity profiles of a Micro-LED film
-        to project dynamic harmonic potential wells ("gravity wells"). These wells
-        trap and position levitated dielectric nanoparticles containing NV centers,
-        enabling non-Euclidean adiabatic qubit braiding operations.
-        
-        Args:
-            num_nodes (int): Total number of independent control nodes / potential wells.
-            arena_radius (float): Normalization radius of the hyperbolic Poincaré disk.
+        Manages the high-gradient voltage scaling to modulate Tier 3 GaN Micro-LED
+        arrays, mirroring the macro configurations of aethel_gravitywell-processor.v.
         """
-        self.num_nodes = num_nodes
-        self.arena_radius = arena_radius
-        
-        # Hardware I/O Registers: Pre-allocated contiguous memory blocks to avoid GC jitter
-        self.apd_sensing_bus = np.zeros(num_nodes, dtype=np.float32)
-        self.micro_led_intensity_register = np.zeros(num_nodes, dtype=np.float32)
-        
-        # Pre-allocated control metrics for Proportional-Derivative (PD) stabilization
-        self.prev_position_error = np.zeros(num_nodes, dtype=np.float32)
-        self.kp = 15.5  # Proportional feedback gain coefficient
-        self.kd = 2.3   # Derivative dampening coefficient
-        
-        # Static Lookup Table (ROM): Pre-calculated hyperbolic metric scale factors
-        self.static_hyperbolic_scaling = np.zeros(num_nodes, dtype=np.float32)
-        
-        # Hardware Memory Map: Target trajectories for adiabatic braiding
-        self.braid_trajectory_target_x = np.zeros(num_nodes, dtype=np.float32)
-        self.braid_trajectory_target_y = np.zeros(num_nodes, dtype=np.float32)
-        
-        # Initialize internal static tables
-        self._initialize_hardware_rom()
+        self.channels = channels
+        self.max_voltage = max_voltage
+        # Baseline drive registers for the optical trapping matrix
+        self.voltage_registers = np.zeros((channels, channels))
 
-    def _initialize_hardware_rom(self):
+    def translate_field_to_voltages(self, potential_slice):
         """
-        Executes on system boot. Pre-computes the non-Euclidean metric tensor 
-        scaling factors for the Poincaré geometry to eliminate runtime divisions.
+        Maps a 2D slice of the 3D topographic potential map directly to physical 
+        voltage values. Higher field densities map to higher drive currents to 
+        deepen the optical gravity wells.
         """
-        rng = np.random.default_rng(seed=101)
-        # Uniformly distribute initial anchor positions across the hyperbolic space
-        angles = rng.uniform(0, 2 * np.pi, self.num_nodes)
-        radii = rng.uniform(0.0, 0.9 * self.arena_radius, self.num_nodes)
+        # Resample or slice the input potential map to match the hardware controller dimensions
+        scaled_potentials = np.abs(potential_slice)
+        max_pot = np.max(scaled_potentials) if np.max(scaled_potentials) > 0 else 1.0
         
-        x = radii * np.cos(angles)
-        y = radii * np.sin(angles)
+        # Normalize potential values and map to the hardware operating voltage (e.g., 0V to 3.3V)
+        normalized_map = scaled_potentials / max_pot
+        self.voltage_registers = normalized_map * self.max_voltage
         
-        # Save structural targets
-        self.braid_trajectory_target_x = x.astype(np.float32)
-        self.braid_trajectory_target_y = y.astype(np.float32)
-        
-        # Compute Conformal Factor: g = 4 / (1 - ||z||^2)^2
-        squared_norms = (x**2 + y**2) / (self.arena_radius**2)
-        self.static_hyperbolic_scaling = (4.0 / ((1.0 - squared_norms) ** 2 + 1e-6)).astype(np.float32)
+        return self.voltage_registers
 
-    def update_braid_targets(self, theta_delta):
+    def generate_fresnel_pwm_vectors(self, phase_matrix_slice):
         """
-        Advances the target phase of the braiding paths. Moves the spatial position 
-        of the gravity wells along continuous non-Euclidean tracks.
+        Converts the Einstein-Fresnel phase refraction matrix ($0$ to $2\pi$) 
+        into discrete Pulse-Width Modulation (PWM) duty cycle percentages. 
+        These vectors feed directly into the FPGA pins mapped in aethel_pins.xdc.
         """
-        # Perform vector rotation to simulate adiabatic orbital swapping
-        cos_d = np.cos(theta_delta)
-        sin_d = np.sin(theta_delta)
-        
-        x_new = self.braid_trajectory_target_x * cos_d - self.braid_trajectory_target_y * sin_d
-        y_new = self.braid_trajectory_target_x * sin_d + self.braid_trajectory_target_y * cos_d
-        
-        self.braid_trajectory_target_x = x_new.astype(np.float32)
-        self.braid_trajectory_target_y = y_new.astype(np.float32)
-
-    def execute_hardware_cycle(self, raw_apd_bus):
-        """
-        Executes a strict sub-microsecond hardware feedback and control loop cycle.
-        
-        Args:
-            raw_apd_bus (np.ndarray): Contiguous float32 array mapping directly to 
-                                      the Avalanche Photodiode sensing registers.
-        Returns:
-            np.ndarray: Updated intensity values sent to the Micro-LED emission array.
-        """
-        # 1. Read live positional displacement from the hardware bus
-        self.apd_sensing_bus = raw_apd_bus
-        
-        # 2. Compute PD displacement correction
-        error = -self.apd_sensing_bus  # Deviation from focal well center
-        derivative = error - self.prev_position_error
-        self.prev_position_error = error
-        
-        # Stabilizing drive current calculation
-        stabilization_drive = (self.kp * error) + (self.kd * derivative)
-        
-        # 3. Apply the Hyperbolic Curvature Transformation Map
-        # Passive physical dot products are executed by the underlying memristor 
-        # crossbar. The firmware multiplies the output by the conformal scaling factor
-        # to ensure potential well stiffness scales properly near the Poincaré boundary.
-        np.multiply(
-            stabilization_drive, 
-            self.static_hyperbolic_scaling, 
-            out=self.micro_led_intensity_register
-        )
-        
-        # 4. Enforce strict hardware voltage clipping constraints [0.0V, 5.0V]
-        np.clip(self.micro_led_intensity_register, 0.0, 5.0, out=self.micro_led_intensity_register)
-        
-        return self.micro_led_intensity_register
-
-if __name__ == '__main__':
-    controller = AethelHarmonicGravityWellController(num_nodes=1024)
-    print(f"Successfully initialized: {controller.__class__.__name__}")
-    print(f"Memory buffers mapped for {controller.num_nodes} potential well anchors.")
-
-    def execute_neural_warp_predictive_loop(self, live_apd_error_matrix):
-        """
-        [HYBRID NEUROMORPHIC-QUANTUM ML LAYER]
-        Utilizes the memristor crossbar array to run a predictive neural network.
-        By analyzing historical drift tensors, the network anticipates kinetic 
-        particle jitter and warps the potential wells pre-emptively.
-        """
-        # Simulate an in-memory neuromorphic weight matrix multiplication (W * x + b)
-        # In hardware, this occurs instantly via Ohm's Law across the crossbar lines
-        rng = np.random.default_rng(seed=42)
-        neuromorphic_weights = rng.normal(0.0, 0.1, (self.num_nodes, self.num_nodes))
-        
-        # Calculate predictive correction vectors based on kinetic patterns
-        predictive_warp_vectors = np.dot(neuromorphic_weights, live_apd_error_matrix)
-        
-        # Actively distort the metric scaling factor ahead of the particle's path
-        # This shifts the optical gravity well to catch the qubit before it drifts
-        self.static_hyperbolic_scaling += 0.01 * predictive_warp_vectors
-        
-        # Enforce stability boundaries so the neural network cannot cause loop oscillation
-        self.static_hyperbolic_scaling = np.clip(self.static_hyperbolic_scaling, 1.0, 100.0)
+        # Map phase angles seamlessly from 0 - 2pi to a 0% - 100% duty cycle
+        pwm_duty_cycles = (phase_matrix_slice / (2.0 * np.pi)) * 100.0
+        # Clip boundaries to protect physical GaN emitters from thermal overdrive
+        return np.clip(pwm_duty_cycles, 0.0, 100.0)
