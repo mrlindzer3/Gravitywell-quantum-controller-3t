@@ -33,6 +33,7 @@ from .aethel_thermodynamic_recycler import AethelThermodynamicRecycler  # Add th
 from .aethel_wavefront_calibrator import AethelWavefrontCalibrator
 from hardware.aethel_diagnostics_logger import AethelDiagnosticsLogger
 from .aethel_predictive_controller import AethelPredictiveController
+from .aethel_manifold_controller import AethelManifoldController
 
 
 # Enforce clean numerical array handling dependencies across the stack
