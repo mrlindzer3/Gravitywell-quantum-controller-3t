@@ -63,3 +63,6 @@ clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 	@echo "✨ Workspace sanitized."
+# Append this target to your active Makefile configuration
+test-hil:
+	python3 -m tests.aethel_hil_harness
