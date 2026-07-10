@@ -204,5 +204,6 @@ from .aethel_graph_compiler import AethelGraphCompiler
 from hardware.aethel_diagnostics_logger import AethelDiagnosticsLogger
 from hardware.aethel_benchmarker import AethelBenchmarker
 from hardware.aethel_cloud_virtualizer import AethelCloudVirtualizer
+from hardware.aethel_ui_dashboard import main as launch_ui_matrix
  ──────────────────────────────────────────────────────────────────────────
 ──────────────────────────────────────────────────────────
