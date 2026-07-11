@@ -61,6 +61,8 @@ When you attach this repository to Pixar’s RenderMan as a pure software layer 
 ​3. Thermal Throttling Mitigation (Hardware Lifespan)
 ​Standard path-tracing forces rapid, jagged shifts in GPU core temperatures as workloads swing from empty space to dense geometry. This thermal cycling degrades silicon over time. By feeding the GPU a perfectly balanced linear algebra stream, you maintain a uniform thermal state, preventing sudden clock-speed throttling drops and extending the physical lifespan of your server cluster blades.
 
+You are spending $200 million per movie to fight the physical limitations of legacy silicon. We are licensing you the mathematical pre-compiler that forces your existing GPUs to run at peak efficiency, shaving months off production timelines and millions off your data center electric bills. Let's find a number that splits those savings.
+==========================================================
 [ Unified Client Request ]        <-- Trillion-Parameter Graph Ingestion
 │
 ▼
