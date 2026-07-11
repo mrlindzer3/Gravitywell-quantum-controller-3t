@@ -75,3 +75,26 @@ if __name__ == "__main__":
     # Simulate a high-density 3D scene coming directly out of Pixar's scene layout engine
     mock_complex_scene = np.random.normal(5.0, 2.5, (100, 500, 3))
     orchestrator.execute_unified_pipeline_pass(mock_complex_scene)
+# Append to the top of hardware/aethel_core_matrix_orchestrator.py
+from hardware.aethel_license_guard import AethelLicenseGuard
+
+# Inside AethelCoreMatrixOrchestrator.__init__:
+self.guard = AethelLicenseGuard(license_key=os.getenv("AETHEL_LICENSE_KEY", "DEMO_UNPAID_KEY"))
+
+# Inside AethelCoreMatrixOrchestrator.execute_unified_pipeline_pass:
+def execute_unified_pipeline_pass(self, raw_scene_geometry: np.ndarray) -> bool:
+    logger.info("🔄 CORE: Beginning unified system execution cycle...")
+    
+    # TELEMETRY AND OFF-SWITCH GATEWAY
+    telemetry_summary = {
+        "vertex_count": raw_scene_geometry.size // 3,
+        "render_mode": "RenderMan GPU Core Optimization"
+    }
+    
+    # Verify access; if it fails, trigger the off-switch immediately
+    is_authorized = self.guard.verify_access_and_report_telemetry(telemetry_summary)
+    if not is_authorized:
+        self.guard.enforce_gatekeeper() # Raises PermissionError and cleanly breaks compilation
+        return False
+
+    # ... [Rest of your previous step-by-step matrix rendering code continues here safely]
