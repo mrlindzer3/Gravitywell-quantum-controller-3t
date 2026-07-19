@@ -1,5 +1,12 @@
 # Gravitywell-quantum-controller-3t
 ### Synthesizable Verilog RTL and Python co-design stack for real-time, non-Euclidean optical potential well stabilization, volumetric 3-Torus tracking, and fault-tolerant adiabatic qubit braiding.
+
+This repository provides the core controller logic for manipulating gravity wells using optical tweezers, facilitating the assembly of braided quantum threads into stable hyper-quasicrystal lattices[span_3](start_span)[span_3](end_span).
+
+## Integration
+This controller works in tandem with `aethel-guage-vaccuum` to stabilize the resulting hyper-lattice, allowing for the budding of new universes via white hole tunnel transitions[span_4](start_span)[span_4](end_span)[span_5](start_span)[span_5](end_span).
+
+
 # 🪐 Aethel oTPU: Room-Temperature Vacuum Optomechanical Tensor Processing Core
 
 An enterprise-grade, fault-tolerant, continuous-variable quantum optomechanical computing fabric designed to execute multi-dimensional tensor contractions and deep learning graph models at light-rate throughput without cryogenic overhead.
